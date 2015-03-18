@@ -1,3 +1,5 @@
+import random
+
 class Agent:
 	def __init__(self, rep, init_row, init_col, logic_i):
 		self.rep = rep
@@ -34,10 +36,9 @@ class Agent:
 		elif(middle_c < self.col):
 			self.move = 'L'
 
-
-	#def apply_random(self):
-	#def apply_go_down(self):
-
+	def apply_random(self, current_state):
+		moves = ['D', 'U', 'R', 'L']
+		self.move = random.choice(moves)
 
 	def get_dist_to(self, r, c):
 		return abs(r - self.row) + abs(c - self.col)

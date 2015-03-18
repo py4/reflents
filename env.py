@@ -1,4 +1,5 @@
 from agent import Agent
+from data import Data
 from random import randint
 
 #get_pos
@@ -24,8 +25,9 @@ class Env:
                 else:
                     break
             self.board[init_row][init_col] = chr(65+i)
-            self.agents.append(Agent(chr(65+i), init_row, init_col, 0))
+            self.agents.append(Agent(chr(65+i), init_row, init_col, i % 2))
 
+        self.data = Data(self.agents)
     def dump_board(self):
         print("current_board:  ")
         print("********************")
@@ -73,8 +75,6 @@ class Env:
                 new_pos.append((p_row, p_col + 1))
                 continue
 
-            self.board[p_row][p_col] = agent.rep
-
         if(len(new_pos) != len(set(new_pos))):
             self.done = True
         else:
@@ -102,12 +102,13 @@ class Env:
     def update_scores(self):
         for agent in self.agents:
             agent.score = self.get_score(agent)
+            self.data.add_score(agent.rep, agent.score)
 
     def get_score(self, agent):
         dist = 0
         for agentt in self.agents:
             dist += agent.get_dist_to(agentt.row, agentt.col)
-        return (self.row_c + self.col_c - (float(dist) / len(self.agents)))
+        return (self.row_c + self.col_c - (float(dist) / len(self.agents)))*10
 
 
 
